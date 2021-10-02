@@ -2,8 +2,16 @@
 
 <based-card>
    <based-button @click="setSelectedTab('stored-ressources')">Stored Ressources</based-button>
-   <based-button @click="setSelectedTab('add-ressource')">Add Ressource</based-button>
+   <based-button mode="flat" @click="setSelectedTab('add-ressource')">Add Ressource </based-button>
 </based-card>
+
+
+<keep-alive>
+       <component :is="selectedTab"></component>
+</keep-alive>
+ 
+
+
 
 
 
@@ -28,7 +36,8 @@ components:{
    provide(){
            
            return{
-             resources : this.storedRessources
+             resources : this.storedRessources,
+             addRessource : this.addRessource
            }
             
          
@@ -55,7 +64,8 @@ data(){
                 id:"google",
                 title:"google",
                 description:'learn to google...',
-                link:"https://google.com/"},
+                link:"https://google.com/"
+                },
                 
             ]
     }
@@ -66,6 +76,24 @@ data(){
       setSelectedTab(tab){
 
           this.selectedTab = tab;
+      },
+
+      addRessource(title,description,url){
+
+          const newResource = {
+
+              id:new Date().toISOString(),
+              title:title,
+              description:description,
+              link:url
+                
+          }
+
+
+          this.storedRessources.unshift(newResource);
+          this.selectedTab = "stored-ressources";
+
+
       }
   }
 
